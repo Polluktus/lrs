@@ -3,3 +3,4 @@
 ls with colors and icons written in rust
 </div>
 ![Screenshot](screen.png)
+---
