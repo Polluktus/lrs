@@ -126,7 +126,28 @@ pub fn run_all_list(config: &Config) -> Result<(), Box<Error>>{
     let file_icon = "  ";
     let dir_icon = "  ";
 
+    let current_dir = Path::new(&config.path);
+    let current_dir_perm = current_dir.metadata().unwrap().permissions();
+    let current_dir_perm = show_permissions(format!("{:o}", current_dir_perm.mode()));
+    let current_uid = current_dir.metadata().unwrap().uid();
+    let current_gid = current_dir.metadata().unwrap().gid();
+    let current_username = get_unix_username(current_uid).unwrap().white();
+    let current_group = get_unix_group(current_gid).unwrap().color(Color::SeaGreen1a);
+
+
+    let parent_path = format!("{}{}", config.path, "/..");
+    let parent_path = &parent_path[..];
+    let parrent_dir = Path::new(parent_path);
+    let parrent_dir_perm = parrent_dir.metadata().unwrap().permissions();
+    let parrent_dir_perm = show_permissions(format!("{:o}", parrent_dir_perm.mode()));
+    let parrent_uid = parrent_dir.metadata().unwrap().uid();
+    let parrent_gid = parrent_dir.metadata().unwrap().gid();
+    let parrent_username = get_unix_username(parrent_uid).unwrap().white();
+    let parrent_group = get_unix_group(parrent_gid).unwrap().color(Color::SeaGreen1a);
+
     if dir.is_dir() {
+    println!("{} {} {} {} {}", current_dir_perm, current_username, current_group ,dir_icon.color(Color::DeepSkyBlue1), "./".color(Color::DeepSkyBlue1));
+    println!("{} {} {} {} {}", parrent_dir_perm, parrent_username, parrent_group ,dir_icon.color(Color::DeepSkyBlue1), "../".color(Color::DeepSkyBlue1));
         for entry in fs::read_dir(dir)? {
             let entry = entry?;
             let filename = entry.file_name().into_string().or_else(|f| Err(format!("Invalid entry: {:?}", f)))?;
