@@ -1,4 +1,4 @@
-use std::{error::Error, iter::FromIterator};
+use std::error::Error;
 use std::fs;
 use std::path::Path;
 use colorful::{Color, Colorful};
